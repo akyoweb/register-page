@@ -37,7 +37,7 @@ text-align: center;
   
 }
 .box{background-color:rgb(238, 243, 243) ;
-    width: 100%;
+    width: 100vh;
     margin: auto;
     height: auto;
     padding: 40px;
@@ -51,7 +51,7 @@ text-align: center;
          align-items: center;
          gap: 18px;
          max-width: 380px;
-         min-width: 120px;
+         min-width: 320px;
          
 }
 .in1{border-radius: 10px;
@@ -66,6 +66,7 @@ text-align: center;
     
 }
 .header{
+     background-color: rgb(227, 240, 255);
   text-align: center;
     font-family: "iransans";
     font-size: 30px;
@@ -99,18 +100,33 @@ text-align: center;
                 border-radius: 8px;
             }
 
-            .btn {
+            #btn 
+             { 
                 padding: 12px;
-                font-size: 16px;
+                font-size: 16px ;
+                
             }
         }
         .din{
-          width: 100%;
-margin-top: 16px;
+    width: 30vh;
+    margin-top: 16px;
 
         }
 
-        .btn{
+        #btn {
            
             margin-top: 10px;
+        }
+        .ckeck{
+      
+            
+        }
+        .checktext{
+            margin-right: 1;
+        }
+        .checktik{
+
+        }
+        .a{
+                text-decoration: none;
         }
