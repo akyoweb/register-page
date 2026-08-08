@@ -27,16 +27,16 @@
                 <div class="box">
                         <h5>اطلاعات صحیح را وارد کنید</h5>
                         <div class="din">
-                                <input id="email" class="in1" type="text" placeholder="ایمیل شماره یا نام کاربری خود را وارد کنید">
+                                <input id="nameid" class="in1" type="text" maxlength="11" placeholder=" شماره یا نام کاربری خود را وارد کنید">
                         </div>
                         <div class="din">
-                                <input id="password" class="in1" type="password" placeholder="رمز خود را وراد کنید">
+                                <input id="password" maxlength="11" class="in1" type="password" placeholder="رمز خود را وراد کنید">
                         </div>
 
                         
 
                         <div>
-                                <button id="btn" class="btn btn-success ">ورود</button>
+                                <button onclick="login()" id="btn" class="btn btn-success ">ورود</button>
 
                         </div>
                         <div class="check">
@@ -46,7 +46,7 @@
 <div style="font-size: 14px; padding: 0px;">
 
 رمز خود را فراموش کرده اید؟ 
-<a class="a" href="#">بازیابی </a>
+<a class="a" href="bazyabi.html">بازیابی </a>
 حساب
 </div>
 
@@ -65,6 +65,86 @@
 
 
         </div>
+
+
+
+
+
+
+<script>
+
+
+
+
+    function login() {
+
+
+        var nameid = document.getElementById("nameid").value;
+
+
+        if (nameid.length < 11 || nameid.length > 11) {
+            alert(".کاربر گرامی شماره وارد شده اشتباه است")
+            return;
+        }
+
+
+        if (nameid.substring(0, 2) != '09') {
+            alert("کاربرگرامی لطفا شماره موبایل را به صورت صحیح وارد کنید.")
+    
+            return;
+
+           
+        }
+
+        alert("شماره موبایل تایید شد");
+
+    }
+
+
+
+function valid(){
+    var password = document.getElementById("password").value;
+      if (password.substring(0,1,2,3,4,5,6,7,8)=',/<>{}-`=+[]') {
+        alert("نمیتوانید از حروف /.,<>{[]}-_` استفاذه کنید")
+        
+      }  
+
+
+
+
+
+
+
+
+}
+
+
+valid();
+
+
+
+
+
+
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

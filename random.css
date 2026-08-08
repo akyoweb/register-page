@@ -37,6 +37,7 @@ text-align: center;
   
 }
 .box{background-color:rgb(238, 243, 243) ;
+   position: relative;
     width: 100vh;
     margin: auto;
     height: auto;
@@ -129,4 +130,10 @@ text-align: center;
         }
         .a{
                 text-decoration: none;
+        }
+
+
+
+        .ersalmojadad{
+position: absolute;
         }

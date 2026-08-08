@@ -46,19 +46,24 @@
 
                 <div class="box">
                         <h5>اطلاعات صحیح را وارد کنید</h5>
+                        <form>
                         <div class="din">
-                                <input id="shomare" class="in1" type="tel" placeholder="شماره تلفن خودرا وارد کنید">
-                        </div>
-                        <div class="din">
-                                <input id="code" class="in1" type="tel" placeholder="کد شش رقمی را وارد کنید">
-                        </div>
+                                <input id="phone" class="in1" type="tel" maxlength="11" placeholder="شماره تلفن خودرا وارد کنید">
+                        </div> 
+                         <div id="divcode" class="din"> 
+                                <input class="d-none" id="code" class="in1" type="tel" placeholder="کد شش رقمی را وارد کنید"> 
+                        
 
                         
 
                         <div>
                                 <button id="btn" class="btn btn-success ">ارسال کد</button>
-
+                        
+<!-- 
                         </div>
+                        <br>
+                        <div class="ersalmojadad"><button style="font-size: 8px;" class="btn btn-primary">ارسال مجدد کد</button></div>
+                      -->
 <div style="font-size: 14px; padding: 0px;">
 
 
@@ -74,23 +79,48 @@
 
 
 <script  >
-var shomare="";
-var code="";
+ let phone= document.getElementById("phone");
+let code= document.getElementById("code");
+let btn= document.getElementById("btn");
+let alertbox= document.getElementById("alertbox");
 
- var x = document.getElementById("shomare").value;
-
-
-
-
+let realcod="1234";
 
 
+btn.onclick = function(){
+
+code.classList.remove("d-none");
+
+let timer = null;
+let time = 60;
+
+btn.addEventListener("click",function(){
+
+        if (timer!==null){
+                return;
+        }
+        btn.disabled = true;
+        time=60;
+        btn.innerText = `${time}ثانیه `;
+        timer = setInterval(function()  {
+                time--;
+              btn.innerText = `${time}ثانیه `;
+
+              if(time<=0){
+                clearInterval(timer);
+                timer = null;
+                btn.disabled = false;
+                btn.innerText="ارسال مجدد کد"
+              }
+                
+        }, 1000);
+
+
+});
 
 
 
-
-
-
-
+};
 
 
 
