@@ -38,27 +38,41 @@
 
 
 <body class="body">
-        <p class="header" class="page">بازیابی حساب</p>
+        
+<div id="alertbox" class="d-none" class="alert alert-success d-flex align-item-center " role="alert">
 
+
+</div>
+   <!-- <p class="header" class="page">بازیابی حساب</p> -->
         <div class="main">
+     
 
 
 
                 <div class="box">
                         <h5>اطلاعات صحیح را وارد کنید</h5>
-                        <form>
+                        <form method="get" action="">
                         <div class="din">
                                 <input id="phone" class="in1" type="tel" maxlength="11" placeholder="شماره تلفن خودرا وارد کنید">
                         </div> 
                          <div id="divcode" class="din"> 
-                                <input class="d-none" id="code" class="in1" type="tel" placeholder="کد شش رقمی را وارد کنید"> 
+                                <input style="border-radius: 10px;
+    border: solid 1px lightslategray;
+    width: 80%;
+    height: 40;
+    outline: none;
+    padding: 9px;
+    box-sizing: border-box;
+    font-size: 16px;" class="d-none" id="code" class="in1" type="tel" placeholder="کد شش رقمی را وارد کنید"> 
                         
 
                         
 
                         <div>
-                                <button id="btn" class="btn btn-success ">ارسال کد</button>
-                        
+                                    <button style="margin-top: 9px;" type="button" id="btn2" class="btn btn-success d-none ">ثبت</button>
+                                <button type="button" id="btn" class="btn btn-success ">ارسال کد</button>
+</form>
+
 <!-- 
                         </div>
                         <br>
@@ -76,102 +90,102 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js">
     </script>
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js">
+</script>
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js">
+</script>
 
-<script  >
- let phone= document.getElementById("phone");
-let code= document.getElementById("code");
-let btn= document.getElementById("btn");
-let alertbox= document.getElementById("alertbox");
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    let phone = document.getElementById("phone");
+    let code = document.getElementById("code");
+    let btn = document.getElementById("btn");
+    let alertbox = document.getElementById("alertbox");
+    let verifyBtn = document.getElementById("btn2"); 
 
-let realcod="1234";
+    let realcod = "1234";
+    let timer = null;
+    let time = 60;
 
-
-btn.onclick = function(){
-
-code.classList.remove("d-none");
-
-let timer = null;
-let time = 60;
-
-btn.addEventListener("click",function(){
-
-        if (timer!==null){
-                return;
+    btn.onclick = function() {
+        if (!phone.value || phone.value.length < 11) {
+            alert("لطفاً شماره تلفن معتبر وارد کنید");
+            return;
         }
-        btn.disabled = true;
-        time=60;
-        btn.innerText = `${time}ثانیه `;
-        timer = setInterval(function()  {
-                time--;
-              btn.innerText = `${time}ثانیه `;
 
-              if(time<=0){
+        code.classList.remove("d-none");
+        verifyBtn.classList.remove("d-none"); 
+        code.disabled = false;
+
+        if (timer !== null) {
+            return;
+        }
+
+        btn.disabled = true;
+        time = 60;
+        btn.innerText = `${time} ثانیه`;
+
+        timer = setInterval(function() {
+            time--;
+            btn.innerText = `${time} ثانیه`;
+
+            if (time <= 0) {
                 clearInterval(timer);
                 timer = null;
                 btn.disabled = false;
-                btn.innerText="ارسال مجدد کد"
-              }
-                
+                btn.innerText = "ارسال مجدد کد";
+            }
         }, 1000);
+    };
+
+    
+    btn2.onclick = function() {
+        if (code.value === realcod) {
+          alertbox.classList.remove("d-none");
+          alertbox.innerHTML="کد تایید شد";
+          alertbox.style.color = "green";
+          alertbox.style.direction="rtl";
+           alertbox.style.width="50%";
+           alertbox.style.textAlign="center";
+          alertbox.style.backgroundColor ="#d4edda";
+          
+
+setTimeout(function(){
+
+alertbox.classList.add("d-none");
 
 
+},5000);
+        } else {
+                 alertbox.classList.remove("d-none");
+          alertbox.innerHTML="کد اشتباه است";
+          alertbox.style.color = "red";
+          alertbox.style.backgroundColor ="#f8d7da";
+           alertbox.style.direction="rtl";
+           alertbox.style.width="50%";
+           alertbox.style.textAlign="center";
+            
+         
+
+
+
+setTimeout(function(){
+
+alertbox.classList.add("d-none");
+
+
+},5000);
+
+
+
+
+
+        }
+    };
 });
 
-
-
-};
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- 
-
-
-
-
-
-
-
-
-
-
-
-
-
 </script>
-
-
-
-
-
-
-
-
-
-
-
-
 
 </body>
 
