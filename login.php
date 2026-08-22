@@ -82,7 +82,7 @@ if(isset($_POST['namefull']) && isset($_POST['phone']) && isset($_POST['password
                 this.classList.add("error-input");
             } else {
                 nameError.classList.add("d-none");
-                this.classList.add("error-input");
+                
             }
         });
 

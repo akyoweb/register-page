@@ -73,7 +73,11 @@
 
 .in1.error-input:focus {
     border-color: #f44336;
-    box-shadow: 0 0 12px rgba(244, 67, 54, 0.3);
+    box-shadow: 0 0 12px rgba(244, 67, 54, 0.2);
+} 
+.in1.success-input{
+     border-color:#4CAF50;
+    box-shadow: 0 0 8px rgba(76, 175, 80, 0.3);
 }
 
 .header {
