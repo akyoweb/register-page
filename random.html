@@ -26,37 +26,42 @@
 
                 <div class="box">
                         <h5>اطلاعات صحیح را وارد کنید</h5>
-                        <div class="din">
-                                <input id="nameid" class="in1" type="text" maxlength="11" placeholder=" شماره یا نام کاربری خود را وارد کنید">
+                        <form method="get" action="index.php">
+                                <div class="din">
+                                        <input name="namefull" id="nameid" class="in1" type="text" maxlength="11"
+                                                placeholder=" شماره یا نام کاربری خود را وارد کنید">
+                                </div>
+                                <div class="din">
+                                        <input name="password" id="password" maxlength="10" class="in1" type="password"
+                                                placeholder="رمز خود را وراد کنید">
+                                </div>
+
+
+
+                                <div>
+                                        <button type="submit" id="btn" class="btn btn-success ">ورود</button>
+
+                                </div>
+
+                                <div class="check">
+                                        <span class="checktext">مرا بخاطر بسپار</span> <input class="checktik"
+                                                style="direction: rtl;" type="checkbox"></input>
+                                </div>
+                        </form>
+                        <div style="font-size: 14px; padding: 0px; margin-top: -15px;">
+
+                                رمز خود را فراموش کرده اید؟
+                                <a class="a" href="bazyabi.html">بازیابی </a>
+                                حساب
                         </div>
-                        <div class="din">
-                                <input id="password" maxlength="11" class="in1" type="password" placeholder="رمز خود را وراد کنید">
-                        </div>
 
-                        
+                        <div style="font-size: 14px;">
 
-                        <div>
-                                <button onclick="login()" id="btn" class="btn btn-success ">ورود</button>
+                                آیا حسابی ندارید؟
+                                <a class="a" href="http://localhost/random/login.php">اینجا</a>
+                                ثبت نام کنید
 
                         </div>
-                        <div class="check">
-                                <span class="checktext">مرا بخاطر بسپار</span> <input class="checktik"
-                                        style="direction: rtl;" type="checkbox"></input>
-                        </div>
-<div style="font-size: 14px; padding: 0px;">
-
-رمز خود را فراموش کرده اید؟ 
-<a class="a" href="bazyabi.html">بازیابی </a>
-حساب
-</div>
-
-<div style="font-size: 14px;">
-
-آیا حسابی ندارید؟
-<a class="a" href="login.html" >اینجا</a> 
- ثبت نام کنید
-
-</div>
 
 
 
@@ -71,63 +76,14 @@
 
 
 
-<script>
-
-
-
-
-    function login() {
-
-
-        var nameid = document.getElementById("nameid").value;
-
-
-        if (nameid.length < 11 || nameid.length > 11) {
-            alert(".کاربر گرامی شماره وارد شده اشتباه است")
-            return;
-        }
-
-
-        if (nameid.substring(0, 2) != '09') {
-            alert("کاربرگرامی لطفا شماره موبایل را به صورت صحیح وارد کنید.")
-    
-            return;
-
-           
-        }
-
-        alert("شماره موبایل تایید شد");
-
-    }
-
-
-
-function valid(){
-    var password = document.getElementById("password").value;
-      if (password.substring(0,1,2,3,4,5,6,7,8)=',/<>{}-`=+[]') {
-        alert("نمیتوانید از حروف /.,<>{[]}-_` استفاذه کنید")
-        
-      }  
+        <script>
 
 
 
 
 
 
-
-
-}
-
-
-valid();
-
-
-
-
-
-
-
-</script>
+        </script>
 
 
 
