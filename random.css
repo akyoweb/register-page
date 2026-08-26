@@ -54,7 +54,7 @@
     transition: all 0.3s ease;
 }
 
-/* هاور و فوکوس اینپوت */
+
 .in1:hover {
     border-color: #4CAF50;
     box-shadow: 0 0 8px rgba(76, 175, 80, 0.2);
@@ -74,7 +74,7 @@
 .in1.error-input:focus {
     border-color: #f44336;
     box-shadow: 0 0 12px rgba(244, 67, 54, 0.2);
-} 
+}  
 .in1.success-input{
      border-color:#4CAF50;
     box-shadow: 0 0 8px rgba(76, 175, 80, 0.3);
@@ -148,7 +148,7 @@
     position: absolute;
 }
 
-/* استایل خطا با اسلاید */
+
 .error {
     color: rgb(243, 24, 24);
 }
@@ -163,7 +163,7 @@
     overflow: hidden;
 }
 
-/* انیمیشن اسلاید برای خطا */
+
 .error_div.d-none {
     display: none !important;
 }
@@ -183,4 +183,8 @@
         transform: translateY(0);
         max-height: 100px;
     }
+}
+.success-input{
+      border-color:#4CAF50;
+    box-shadow: 0 0 8px rgba(76, 175, 80, 0.3);
 }

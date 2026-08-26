@@ -1,3 +1,34 @@
+<?PHP
+session_start();
+ require("database.php");
+
+if(isset($_POST['namefull']) && isset($_POST['phone']) && isset($_POST['password'])){
+
+  $namefull = mysqli_real_escape_string($db, $_POST['namefull']);
+    $phone = mysqli_real_escape_string($db, $_POST['phone']);
+     $password = mysqli_real_escape_string($db, $_POST['password']);
+
+
+
+
+
+};
+
+
+
+
+
+?>
+
+
+
+
+
+
+
+
+
+
 <html>
 
 
@@ -28,12 +59,12 @@
                         <h5>اطلاعات صحیح را وارد کنید</h5>
                         <form method="get" action="index.php">
                                 <div class="din">
-                                        <input name="namefull" id="nameid" class="in1" type="text" maxlength="11"
+                                        <input maxlength="20" required name="namefull" id="namefull" class="in1" type="text" maxlength="11"
                                                 placeholder=" شماره یا نام کاربری خود را وارد کنید">
                                 </div>
                                 <div class="din">
                                         <form method="post" action="">
-                                        <input name="password" id="password" maxlength="10" class="in1" type="password"
+                                        <input maxlength="11" required name="password" id="password" maxlength="10" class="in1" type="password"
                                                 placeholder="رمز خود را وراد کنید">
                                 </div>
 
@@ -107,22 +138,7 @@
 
 
 </body>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-</head>
-
+ 
 
 
 
@@ -142,24 +158,3 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-</html>
