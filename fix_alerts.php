@@ -1,0 +1,24 @@
+<?php
+// -*- coding: utf-8 -*-
+$fn = __DIR__ . '/register.php';
+$c = file_get_contents($fn);
+if ($c === false) {
+    die("cannot read\n");
+}
+
+$old1 = "echo '<div class=\"alert-slide-pro\"><span class=\"alert-icon\">\xE2\x9C\x85</span></div>'. \$row['namefull'];";
+$new1 = "echo '<div class=\"alert-slide-pro\"><span class=\"alert-icon\">\xE2\x9C\x85</span> \xD8\xAE\xD9\x88\xD8\xB4 \xD8\xA2\xD9\x85\xD8\xAF\xDB\x8C '. htmlspecialchars(\$row['namefull']) .' \xD8\xAF\xD8\xB1 \xD8\xAD\xD8\xA7\xD9\x84 \xD8\xA7\xD9\x86\xD8\xAA\xD9\x82\xD8\xA7\xD9\x84 \xD8\xA8\xD9\x87 \xD8\xAE\xD8\xA7\xD9\x86\xD9\x87...</div>';";
+
+$c = str_replace($old1, $new1, $c, $n1);
+
+$old2 = "echo'<div style=\"direction:rtl; width:30%;\" class=\"alert alert-danger d-flex align-center\">\xD9\x86\xD8\xA7\xD9\x85 \xDA\xA9\xD8\xA7\xD8\xB1\xD8\xA8\xD8\xB1\xDB\x8C \xD9\x88\xD8\xB1\xD9\x88\xD8\xB2 \xD8\xB9\xD8\xA8\xD9\x88\xD8\xB1 \xD8\xA7\xD8\xB4\xD8\xAA\xD8\xA8\xD8\xA7\xD9\x87 \xD8\xA7\xD8\xB3\xD8\xAA</div>';";
+$new2 = "echo '<div class=\"alert-error-center\">\xD9\x86\xD8\xA7\xD9\x85 \xDA\xA9\xD8\xA7\xD8\xB1\xD8\xA8\xD8\xB1\xDB\x8C \xD9\x88\xD8\xB1\xD9\x88\xD8\xB2 \xD8\xB9\xD8\xA8\xD9\x88\xD8\xB1 \xD8\xA7\xD8\xB4\xD8\xAA\xD8\xA8\xD8\xA7\xD9\x87 \xD8\xA7\xD8\xB3\xD8\xAA</div>';";
+
+$c = str_replace($old2, $new2, $c, $n2);
+
+$old3 = "echo' <meta http-equiv=\"refresh\" content=\"2;url=index.php\">';";
+$new3 = "echo '<meta http-equiv=\"refresh\" content=\"2;url=index.php\">';";
+$c = str_replace($old3, $new3, $c, $n3);
+
+file_put_contents($fn, $c);
+echo "n1=$n1 n2=$n2 n3=$n3\n";

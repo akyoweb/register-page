@@ -13,15 +13,15 @@ $result = mysqli_query($db,$query);
 
 if ($row = mysqli_fetch_assoc($result)){
 
-echo '<div class="alert-slide-pro"><span class="alert-icon">✅</span></div>'. $row['namefull'];
+echo '<div class="alert-slide-pro"><span class="alert-icon">✅</span> خوش آمدی '. htmlspecialchars($row['namefull']) .' در حال انتقال به خانه...</div>';
 echo'<div class="success"><p>درحال انتقال به خانه...</p></div>
 <div class="loader"></div>
 ';
-echo' <meta http-equiv="refresh" content="2;url=index.php">';
+echo '<meta http-equiv="refresh" content="2;url=index.php">';
 
 }else{
 
-echo'<div style="direction:rtl; width:30%;" class="alert alert-danger d-flex align-center">نام کاربری یا روز عبور اشتباه است</div>';
+echo '<div class="alert-error-center">نام کاربری یا رمز عبور اشتباه است</div>';
 
 
 };
