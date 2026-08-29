@@ -1,4 +1,4 @@
-<?PHP
+﻿<?PHP
 
 require("database.php");
 
@@ -14,9 +14,7 @@ $result = mysqli_query($db,$query);
 if ($row = mysqli_fetch_assoc($result)){
 
 echo '<div class="alert-slide-pro"><span class="alert-icon">✅</span> خوش آمدی '. htmlspecialchars($row['namefull']) .' در حال انتقال به خانه...</div>';
-echo'<div class="success"><p>درحال انتقال به خانه...</p></div>
-<div class="loader"></div>
-';
+
 echo '<meta http-equiv="refresh" content="2;url=index.php">';
 
 }else{
