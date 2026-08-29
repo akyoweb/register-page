@@ -18,7 +18,7 @@ require("database.php");
     <meta charset="utf-8" />
     <link rel="stylesheet" href="random.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <title>صفحه ثبت نام</title>
+    
 </head>
 
 <body class="body">
@@ -59,7 +59,7 @@ require("database.php");
 
             <div>
                 آیا از قبل حساب دارید؟
-                <a class="a" href="random.html">وارد</a> شوید
+                <a class="a" href="register.php">وارد</a> شوید
             </div>
         </div>
     </div>
