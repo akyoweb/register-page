@@ -23,7 +23,7 @@ if (isset($_POST['action']) && $_POST['action'] === 'login') {
 
     if ($row) {
         if ($row['password'] === $pass) {
-            $_SESSION['userid'] = (int) $row['id'];
+            $_SESSION['user_id'] = (int) $row['id'];
             $_SESSION['namefull'] = $row['namefull'];
             $_SESSION['username'] = $user;
             $ok = 'yes';
