@@ -1,3 +1,5 @@
+
+
 <?php
 require_once __DIR__ . '/auth.php';
 
@@ -42,19 +44,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $newId = mysqli_insert_id($db);
     mysqli_stmt_close($stmt);
 
-    // بعد از ثبت نام، سشن ساخته نمی‌شود؛ کاربر مستقیم به صفحه ورود می‌رود
-    json_response(true, 'ثبت نام با موفقیت انجام شد. لطفاً وارد شوید!');
+    // ---------- ورود خودکار بعد از ثبت نام ----------
+    login_user($newId, $namefull, !empty($_POST['remember']));
+    json_response(true, 'ثبت نام با موفقیت انجام شد. خوش آمدی ' . $namefull . '!');
 }
 ?>
-<!DOCTYPE html>
-<html lang="fa">
-
-<head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta charset="utf-8" />
-    <title>ثبت نام</title>
-    <link rel="stylesheet" href="random.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<title>ثبت نام</title>
+<link rel="stylesheet" href="random.css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 
 <body class="body">
@@ -64,7 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="box">
             <h5>اطلاعات مورد نیاز را وارد کنید</h5>
 
-            <form action="login.php" method="POST" data-ajax data-redirect="register.php">
+            <form action="login.php" method="POST" data-ajax data-redirect="index.php">
 
                 <div class="din">
                     <input required maxlength="20" name="namefull" id="namefull" class="in1" type="text"

@@ -29,6 +29,23 @@ if (isset($_POST['ajax']) && $_POST['ajax'] == 'check_phone') {
     exit();
 }
 
+if (isset($_POST['ajax']) && $_POST['ajax'] == 'login_success') {
+$phone2 = mysqli_real_escape_string($db, trim($_POST['phone'] ?? ''));
+$stmt = mysqli_prepare($db, 'SELECT id, namefull FROM user WHERE phone = ? LIMIT 1');
+if ($stmt) {
+mysqli_stmt_bind_param($stmt, 's', $phone2);
+mysqli_stmt_execute($stmt);
+$res = mysqli_stmt_get_result($stmt);
+if ($row = mysqli_fetch_assoc($res)) {
+login_user((int)$row['id'], $row['namefull'], false);
+mysqli_stmt_close($stmt);
+json_response(true, 'ورود موفقیت‌آمیز بود');
+}
+mysqli_stmt_close($stmt);
+}
+json_response(false, 'کاربر یافت نشد');
+}
+
 // نمایش خطا در صورت وجود (برای بار اول)
 if (isset($_GET['error'])) {
     echo '<div class="alert-error-center" id="errorAlert">شماره تلفن وارد شده در سیستم ثبت نشده است</div>';

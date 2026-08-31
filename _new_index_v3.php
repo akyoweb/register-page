@@ -1,6 +1,15 @@
 <?php
 require_once __DIR__ . '/auth.php';
-require_login('register.php');
+restore_from_cookie();
+
+// اگر لاگین نیستیم: برای AJAX پاسخ JSON تمیز، برای GET ریدایرکت
+if (!current_user()) {
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        json_response(false, 'نشست شما منقضی شده است. لطفاً دوباره وارد شوید');
+    }
+    header('Location: register.php');
+    exit;
+}
 
 $user = current_user();
 $db = $GLOBALS['db'];
@@ -27,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $up = mysqli_prepare($db, 'UPDATE user SET namefull = ? WHERE id = ?');
         mysqli_stmt_bind_param($up, 'si', $newname, $user['id']);
         if (mysqli_stmt_execute($up)) {
-            $_SESSION['namefull'] = $newname; // به‌روزرسانی سشن
+            $_SESSION['namefull'] = $newname;
             mysqli_stmt_close($up);
             json_response(true, 'نام کاربری با موفقیت تغییر کرد');
         }
@@ -80,7 +89,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             mkdir($dir, 0777, true);
         }
         foreach ((glob($dir . '/avatar_' . $user['id'] . '.*') ?: []) as $old) {
-            @unlink($old); // حذف عکس قبلی
+            @unlink($old);
         }
         $dest = $dir . '/avatar_' . $user['id'] . '.' . $ext;
         if (move_uploaded_file($f['tmp_name'], $dest)) {
@@ -104,7 +113,7 @@ function avatar_url($id)
 function default_avatar($name)
 {
     $initial = mb_substr($name, 0, 1);
-    $colors = ['#6c5ce7', '#0984e3', '#00b894', '#e17055', '#d63031', '#00cec9'];
+    $colors = ['#6366f1', '#0ea5e9', '#10b981', '#f59e0b', '#ef4444', '#06b6d4'];
     $color = $colors[abs(crc32($name)) % count($colors)];
     $svg = '<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200">'
         . '<rect width="200" height="200" fill="' . $color . '"/>'
@@ -117,7 +126,6 @@ $avatar = avatar_url($user['id']);
 $avatarSrc = $avatar ? $avatar : default_avatar($user['namefull']);
 $hasAvatar = $avatar ? 'دارد' : 'ندارد';
 ?>
-
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 
@@ -126,9 +134,9 @@ $hasAvatar = $avatar ? 'دارد' : 'ندارد';
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>پنل شخصی</title>
     <link rel="stylesheet" href="fontawesome/css/all.min.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="random.css">
-    <link rel="stylesheet" href="panel.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700;900&display=swap" rel="stylesheet">
 </head>
 
 <body class="panel-body">
@@ -140,7 +148,7 @@ $hasAvatar = $avatar ? 'دارد' : 'ندارد';
             <span>پنل شخصی</span>
         </div>
         <div class="navbar-user">
-            <img src="<?php echo $avatarSrc; ?>" alt="عکس پروفایل">
+            <img src="<?php echo $avatarSrc; ?>" alt="آواتار">
             <span class="nav-name"><?php echo htmlspecialchars($user['namefull']); ?></span>
             <a class="logout-btn" href="logout.php"><i class="fa-solid fa-right-from-bracket"></i> خروج</a>
         </div>
@@ -148,12 +156,12 @@ $hasAvatar = $avatar ? 'دارد' : 'ندارد';
 
     <main class="panel-container">
 
-        <!-- کارت خوش‌آمد -->
+        <!-- هیرو / خوش‌آمد -->
         <section class="hero-card">
             <img class="hero-avatar" src="<?php echo $avatarSrc; ?>" alt="عکس پروفایل">
             <div class="hero-info">
                 <h1>سلام، <?php echo htmlspecialchars($user['namefull']); ?> 👋</h1>
-                <p>همه‌چیز حساب تو همین‌جاست.</p>
+                <p>همه‌چیز حساب تو اینجاست.</p>
                 <span class="badge-active"><i class="fa-solid fa-circle-check"></i> حساب فعال</span>
             </div>
             <div class="hero-stats">
@@ -164,20 +172,20 @@ $hasAvatar = $avatar ? 'دارد' : 'ندارد';
 
         <!-- اسلایدر -->
         <div class="slider my-4" id="slider">
-            <div class="slide active" style="background: linear-gradient(135deg, #6c5ce7, #a29bfe);">
+            <div class="slide active" style="background: linear-gradient(135deg, #6366f1, #8b5cf6);">
                 <i class="fa-solid fa-wand-magic-sparkles slide-icon"></i>
                 <h3>به پنل شخصی خوش آمدید</h3>
                 <p>پروفایل خود را مدیریت کنید</p>
             </div>
-            <div class="slide" style="background: linear-gradient(135deg, #0984e3, #74b9ff);">
+            <div class="slide" style="background: linear-gradient(135deg, #0ea5e9, #3b82f6);">
                 <i class="fa-solid fa-image slide-icon"></i>
                 <h3>عکس پروفایل</h3>
-                <p>عکس خود را آپلود کنید</p>
+                <p>صورت خود را آپلود کنید</p>
             </div>
-            <div class="slide" style="background: linear-gradient(135deg, #00b894, #55efc4);">
+            <div class="slide" style="background: linear-gradient(135deg, #10b981, #06b6d4);">
                 <i class="fa-solid fa-gear slide-icon"></i>
                 <h3>تنظیمات حساب</h3>
-                <p>نام کاربری و رمز خود را تغییر دهید</p>
+                <p>نام کاربری و رمز را تغییر دهید</p>
             </div>
             <button class="slider-btn prev" type="button" aria-label="قبلی">&#10094;</button>
             <button class="slider-btn next" type="button" aria-label="بعدی">&#10095;</button>
@@ -186,74 +194,67 @@ $hasAvatar = $avatar ? 'دارد' : 'ندارد';
 
         <!-- تنظیمات -->
         <h2 class="section-title"><i class="fa-solid fa-sliders"></i> تنظیمات حساب</h2>
-        <div class="row g-4">
+        <div class="settings-grid">
 
-            <div class="col-12 col-md-6 col-lg-4">
-                <div class="card setting-card h-100">
-                    <div class="setting-head g-avatar">
-                        <i class="fa-solid fa-camera"></i>
-                        <h5>آپلود عکس پروفایل</h5>
-                    </div>
-                    <div class="card-body">
-                        <form method="post" data-ajax enctype="multipart/form-data">
-                            <input type="hidden" name="action" value="upload_avatar">
-                            <div class="mb-3">
-                                <label class="form-label">فایل تصویر</label>
-                                <input type="file" name="avatar" accept="image/jpeg,image/png,image/webp,image/gif"
-                                    class="form-control" required>
-                                <small class="text-muted">حداکثر ۲ مگابایت (JPG, PNG, WebP, GIF)</small>
-                            </div>
-                            <button type="submit" class="btn btn-grad b-avatar w-100"><i
-                                    class="fa-solid fa-upload"></i> آپلود</button>
-                        </form>
-                    </div>
+            <div class="setting-card">
+                <div class="setting-head g1">
+                    <i class="fa-solid fa-camera"></i>
+                    <h5>عکس پروفایل</h5>
+                </div>
+                <div class="setting-body">
+                    <form method="post" data-ajax data-redirect="index.php" enctype="multipart/form-data">
+                        <input type="hidden" name="action" value="upload_avatar">
+                        <div class="mb-3">
+                            <label class="form-label">عکس جدید</label>
+                            <input type="file" name="avatar" accept="image/jpeg,image/png,image/webp,image/gif"
+                                class="form-control" required>
+                            <small class="text-muted">حداکثر ۲ مگابایت (JPG, PNG, WebP, GIF)</small>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100"><i class="fa-solid fa-upload"></i>
+                            آپلود</button>
+                    </form>
                 </div>
             </div>
 
-            <div class="col-12 col-md-6 col-lg-4">
-                <div class="card setting-card h-100">
-                    <div class="setting-head g-name">
-                        <i class="fa-solid fa-user-pen"></i>
-                        <h5>تغییر نام کاربری</h5>
-                    </div>
-                    <div class="card-body">
-                        <form method="post" data-ajax>
-                            <input type="hidden" name="action" value="update_name">
-                            <div class="mb-3">
-                                <label class="form-label">نام جدید</label>
-                                <input type="text" name="namefull" class="form-control" maxlength="20"
-                                    placeholder="حداقل ۳ حرف" required>
-                            </div>
-                            <button type="submit" class="btn btn-grad b-name w-100"><i
-                                    class="fa-solid fa-floppy-disk"></i> ذخیره</button>
-                        </form>
-                    </div>
+            <div class="setting-card">
+                <div class="setting-head g2">
+                    <i class="fa-solid fa-user-pen"></i>
+                    <h5>نام کاربری</h5>
+                </div>
+                <div class="setting-body">
+                    <form method="post" data-ajax data-redirect="index.php">
+                        <input type="hidden" name="action" value="update_name">
+                        <div class="mb-3">
+                            <label class="form-label">نام جدید</label>
+                            <input type="text" name="namefull" class="form-control" maxlength="20"
+                                placeholder="حداقل ۳ حرف" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100"><i class="fa-solid fa-floppy-disk"></i>
+                            ذخیره</button>
+                    </form>
                 </div>
             </div>
 
-            <div class="col-12 col-md-6 col-lg-4">
-                <div class="card setting-card h-100">
-                    <div class="setting-head g-pass">
-                        <i class="fa-solid fa-key"></i>
-                        <h5>تغییر رمز عبور</h5>
-                    </div>
-                    <div class="card-body">
-                        <form method="post" data-ajax>
-                            <input type="hidden" name="action" value="update_pass">
-                            <div class="mb-3">
-                                <label class="form-label">رمز فعلی</label>
-                                <input type="password" name="current_pass" class="form-control" maxlength="11"
-                                    placeholder="رمز فعلی" required>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">رمز جدید</label>
-                                <input type="password" name="new_pass" class="form-control" maxlength="11"
-                                    placeholder="حداقل ۶ کاراکتر" required>
-                            </div>
-                            <button type="submit" class="btn btn-grad b-pass w-100"><i
-                                    class="fa-solid fa-floppy-disk"></i> ذخیره</button>
-                        </form>
-                    </div>
+            <div class="setting-card">
+                <div class="setting-head g3">
+                    <i class="fa-solid fa-key"></i>
+                    <h5>رمز عبور</h5>
+                </div>
+                <div class="setting-body">
+                    <form method="post" data-ajax>
+                        <input type="hidden" name="action" value="update_pass">
+                        <div class="mb-3">
+                            <label class="form-label">رمز فعلی</label>
+                            <input type="password" name="current_pass" class="form-control" maxlength="11" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">رمز جدید</label>
+                            <input type="password" name="new_pass" class="form-control" maxlength="11"
+                                placeholder="حداقل ۶ کاراکتر" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100"><i class="fa-solid fa-floppy-disk"></i>
+                            ذخیره</button>
+                    </form>
                 </div>
             </div>
 
@@ -261,7 +262,7 @@ $hasAvatar = $avatar ? 'دارد' : 'ندارد';
     </main>
 
     <footer class="panel-footer">
-        <i class="fa-regular fa-copyright"></i> پنل شخصی — ساخته‌شده با PHP
+        <i class="fa-regular fa-copyright"></i> پنل شخصی — ساخته شده با <!-- --> و PHP
     </footer>
 
     <script src="ajax.js"></script>
@@ -299,4 +300,3 @@ $hasAvatar = $avatar ? 'دارد' : 'ندارد';
 </body>
 
 </html>
-​
