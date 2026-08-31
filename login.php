@@ -1,10 +1,10 @@
 <?PHP
-session_start();
+
 require("database.php");
 
  if(isset($_POST['namefull']) && isset($_POST['phone']) && isset($_POST['password'])){
     $namefull = mysqli_real_escape_string($db, $_POST['namefull']);
-    $phone = mysqli_real_escape_string($db, $_POST['phone']);
+    $phone = $_POST['phone'];
     $password = mysqli_real_escape_string($db, $_POST['password']);
     
      $sql = mysqli_query($db, "INSERT INTO user(namefull, phone, password) VALUES ('$namefull','$phone','$password')");

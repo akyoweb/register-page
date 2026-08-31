@@ -1,37 +1,35 @@
 ﻿<?PHP
-
 require("database.php");
 
-if (isset($_POST['namefull'])  && isset($_POST['password'])) {
+if (isset($_POST['namefull']) && isset($_POST['password'])) {
+    $namefull = mysqli_real_escape_string($db, $_POST['namefull']);
+    $password = mysqli_real_escape_string($db, $_POST['password']);
 
-    $namefull =  $_POST['namefull'];
+    $query = "SELECT * FROM user WHERE namefull='$namefull' AND password='$password'";
+    $result = mysqli_query($db, $query);
+
+    if ($row = mysqli_fetch_assoc($result)) {
+        echo '<div class="alert-slide-pro"><span class="alert-icon">✅</span> خوش آمدی ' . htmlspecialchars($row['namefull']) . ' در حال انتقال به خانه...</div>';
+        echo '<meta http-equiv="refresh" content="2;url=index.php">';
+    } else {
+        echo '<div class="alert-error-center" id="errorAlert">نام کاربری یا رمز عبور اشتباه است</div>';
    
-    $password = $_POST['password'];
-
-$query= "select * from user where namefull='$namefull' and password='$password' ";
-$result = mysqli_query($db,$query);
-
-if ($row = mysqli_fetch_assoc($result)){
-
-echo '<div class="alert-slide-pro"><span class="alert-icon">✅</span> خوش آمدی '. htmlspecialchars($row['namefull']) .' در حال انتقال به خانه...</div>';
-
-echo '<meta http-equiv="refresh" content="2;url=index.php">';
-
-}else{
-
-echo '<div class="alert-error-center">نام کاربری یا رمز عبور اشتباه است</div>';
-
-
-};
-
-
-};
-
-
-
-
-
+        echo '<script>
+            setTimeout(function() {
+                var alert = document.getElementById("errorAlert");
+                if (alert) {
+                    alert.style.display = "none";
+                }
+            }, 3000);
+        </script>';
+    }
+}
 ?>
+
+
+
+
+
 
 
 
@@ -102,7 +100,7 @@ echo '<div class="alert-error-center">نام کاربری یا رمز عبور �
         <div style="font-size: 14px; padding: 0px; margin-top: -15px;">
 
             رمز خود را فراموش کرده اید؟
-            <a class="a" href="bazyabi.html">بازیابی </a>
+            <a class="a" href="bazyabi.php">بازیابی </a>
             حساب
         </div>
 
