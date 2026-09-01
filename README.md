@@ -1,4 +1,199 @@
 
+
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;700&display=swap');
+  
+  body {
+    margin: 0;
+    width: 1000px;
+    height: 600px;
+    background: #0d1117;
+    font-family: 'Vazirmatn', sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+  
+  .card {
+    position: relative;
+    width: 850px;
+    background: #161b22;
+    border-radius: 20px;
+    border: 1px solid #30363d;
+    padding: 40px 50px;
+    box-shadow: 0 0 40px rgba(88,166,255,0.1);
+    overflow: hidden;
+  }
+  
+  /* افکت انیمهای */
+  .card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, transparent, rgba(88,166,255,0.05), transparent);
+    animation: rotate 8s linear infinite;
+  }
+  
+  @keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+  
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+  }
+  
+  .name {
+    font-size: 42px;
+    font-weight: 700;
+    color: #c9d1d9;
+    letter-spacing: 2px;
+  }
+  
+  .name span {
+    color: #58a6ff;
+  }
+  
+  .anime-icon {
+    font-size: 40px;
+    animation: float 3s ease-in-out infinite;
+  }
+  
+  @keyframes float {
+    0%,100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+  
+  .bio {
+    color: #8b949e;
+    font-size: 18px;
+    margin-bottom: 30px;
+    border-right: 3px solid #58a6ff;
+    padding-right: 15px;
+  }
+  
+  .tech {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 15px;
+    margin-bottom: 35px;
+  }
+  
+  .tech-item {
+    background: #21262d;
+    border-radius: 10px;
+    padding: 15px;
+    text-align: center;
+    color: #c9d1d9;
+    font-size: 14px;
+    transition: 0.3s;
+    border: 1px solid transparent;
+  }
+  
+  .tech-item:hover {
+    border-color: #58a6ff;
+    background: #2d333b;
+    transform: translateY(-3px);
+  }
+  
+  .tech-item .icon {
+    font-size: 24px;
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  .footer {
+    display: flex;
+    justify-content: space-between;
+    color: #8b949e;
+    font-size: 14px;
+    padding-top: 15px;
+    border-top: 1px solid #30363d;
+  }
+  
+  .footer .status {
+    color: #3fb950;
+  }
+  
+  .anime-cat {
+    position: absolute;
+    bottom: 20px;
+    left: 30px;
+    font-size: 35px;
+    opacity: 0.3;
+    animation: tail 4s ease-in-out infinite;
+  }
+  
+  @keyframes tail {
+    0%,100% { transform: rotate(-5deg); }
+    50% { transform: rotate(5deg); }
+  }
+</style>
+</head>
+<body>
+  <div class="card">
+    <div class="header">
+      <div class="name">Akyo<span>web</span></div>
+      <div class="anime-icon">js,php,sql</div>
+    </div>
+    
+    <div class="bio">
+      Full-Stack Developer <br>
+      Building cool stuff with code & coffee
+    </div>
+    
+    <div class="tech">
+      <div class="tech-item"><span class="icon"></span>PHP</div>
+      <div class="tech-item"><span class="icon"></span>JavaScript</div>
+      <div class="tech-item"><span class="icon"></span>SQL</div>
+      <div class="tech-item"><span class="icon"></span>HTML</div>
+      <div class="tech-item"><span class="icon"></span>CSS</div>
+    </div>
+    
+    <div class="footer">
+      <span class="status">● Online</span>
+      <span>github.com/Akyoweb</span>
+    </div>
+    
+    <div class="anime-cat"></div>
+  </div>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # 🧑‍💻 Personal Panel (پنل شخصی)
 A lightweight PHP user-account system: registration, login, password recovery (SMS-code style with a recovery code), and a personal panel where users can change their username, change their password, and upload a profile picture.
 
