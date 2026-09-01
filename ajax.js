@@ -15,13 +15,20 @@
       btn.innerText = "لطفاً صبر کنید...";
     }
 
-    fetch(form.action || window.location.href, {
+    var requestUrl = form.getAttribute("action") || window.location.href;
+    fetch(requestUrl, {
       method: "POST",
       body: new FormData(form),
+      credentials: "same-origin",
+      headers: { Accept: "application/json" },
     })
       .then(function (r) {
+        var contentType = r.headers.get("content-type") || "";
+        if (r.redirected || !contentType.includes("application/json")) {
+          throw new Error("نشست ورود منقضی شده است. دوباره وارد حساب شوید");
+        }
         if (!r.ok) {
-          throw new Error("HTTP " + r.status);
+          throw new Error("خطای سرور (" + r.status + ")");
         }
         return r.json();
       })
@@ -42,12 +49,12 @@
           showTopAlert((data && data.message) || "خطایی رخ داد", "error");
         }
       })
-      .catch(function () {
+      .catch(function (error) {
         if (btn) {
           btn.disabled = false;
           btn.innerText = oldLabel;
         }
-        showTopAlert("خطا در ارتباط با سرور", "error");
+        showTopAlert(error.message || "خطا در ارتباط با سرور", "error");
       });
   });
 

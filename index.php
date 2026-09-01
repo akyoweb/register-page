@@ -16,8 +16,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             json_response(false, 'نام کاربری باید بین ۳ تا ۲۰ کاراکتر باشد');
         }
         $stmt = mysqli_prepare($db, 'SELECT id FROM user WHERE namefull = ? AND id <> ? LIMIT 1');
+        if (!$stmt) {
+            json_response(false, 'خطا در آماده‌سازی تغییر نام');
+        }
         mysqli_stmt_bind_param($stmt, 'si', $newname, $user['id']);
-        mysqli_stmt_execute($stmt);
+        if (!mysqli_stmt_execute($stmt)) {
+            mysqli_stmt_close($stmt);
+            json_response(false, 'بررسی نام کاربری انجام نشد');
+        }
         if (mysqli_fetch_assoc(mysqli_stmt_get_result($stmt))) {
             mysqli_stmt_close($stmt);
             json_response(false, 'این نام کاربری قبلاً گرفته شده است');
@@ -25,6 +31,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         mysqli_stmt_close($stmt);
 
         $up = mysqli_prepare($db, 'UPDATE user SET namefull = ? WHERE id = ?');
+        if (!$up) {
+            json_response(false, 'خطا در آماده‌سازی تغییر نام');
+        }
         mysqli_stmt_bind_param($up, 'si', $newname, $user['id']);
         if (mysqli_stmt_execute($up)) {
             $_SESSION['namefull'] = $newname; // به‌روزرسانی سشن
@@ -43,8 +52,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             json_response(false, 'رمز جدید باید بین ۶ تا ۱۱ کاراکتر باشد');
         }
         $stmt = mysqli_prepare($db, 'SELECT password FROM user WHERE id = ? LIMIT 1');
+        if (!$stmt) {
+            json_response(false, 'خطا در آماده‌سازی بررسی رمز');
+        }
         mysqli_stmt_bind_param($stmt, 'i', $user['id']);
-        mysqli_stmt_execute($stmt);
+        if (!mysqli_stmt_execute($stmt)) {
+            mysqli_stmt_close($stmt);
+            json_response(false, 'بررسی رمز عبور انجام نشد');
+        }
         $row = mysqli_fetch_assoc(mysqli_stmt_get_result($stmt));
         mysqli_stmt_close($stmt);
         if (!$row || $row['password'] !== $current) {
@@ -52,18 +67,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         $up = mysqli_prepare($db, 'UPDATE user SET password = ? WHERE id = ?');
+        if (!$up) {
+            json_response(false, 'خطا در آماده‌سازی تغییر رمز');
+        }
         mysqli_stmt_bind_param($up, 'si', $newpass, $user['id']);
-        mysqli_stmt_execute($up);
+        if (!mysqli_stmt_execute($up)) {
+            mysqli_stmt_close($up);
+            json_response(false, 'تغییر رمز عبور انجام نشد');
+        }
         mysqli_stmt_close($up);
         json_response(true, 'رمز عبور با موفقیت تغییر کرد');
     }
 
     // آپلود عکس پروفایل
     if ($action === 'upload_avatar') {
-        if (empty($_FILES['avatar']) || $_FILES['avatar']['error'] !== UPLOAD_ERR_OK) {
+        if (empty($_FILES['avatar'])) {
             json_response(false, 'لطفاً یک تصویر انتخاب کنید');
         }
         $f = $_FILES['avatar'];
+        if ($f['error'] !== UPLOAD_ERR_OK) {
+            $uploadErrors = [
+                UPLOAD_ERR_INI_SIZE => 'حجم فایل از محدودیت سرور بیشتر است',
+                UPLOAD_ERR_FORM_SIZE => 'حجم فایل از مقدار مجاز بیشتر است',
+                UPLOAD_ERR_PARTIAL => 'فایل کامل آپلود نشد',
+                UPLOAD_ERR_NO_FILE => 'لطفاً یک تصویر انتخاب کنید',
+                UPLOAD_ERR_NO_TMP_DIR => 'پوشه موقت آپلود در سرور موجود نیست',
+                UPLOAD_ERR_CANT_WRITE => 'امکان ذخیره فایل در سرور وجود ندارد',
+            ];
+            json_response(false, $uploadErrors[$f['error']] ?? 'خطای نامشخص در آپلود فایل');
+        }
         if ($f['size'] > 2 * 1024 * 1024) {
             json_response(false, 'حجم تصویر حداکثر ۲ مگابایت است');
         }
@@ -76,8 +108,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         $dir = __DIR__ . '/uploads';
-        if (!is_dir($dir)) {
-            mkdir($dir, 0777, true);
+        if (!is_dir($dir) && !mkdir($dir, 0777, true) && !is_dir($dir)) {
+            json_response(false, 'ساخت پوشه تصاویر در سرور انجام نشد');
+        }
+        if (!is_writable($dir)) {
+            json_response(false, 'پوشه تصاویر در سرور قابل نوشتن نیست');
         }
         foreach ((glob($dir . '/avatar_' . $user['id'] . '.*') ?: []) as $old) {
             @unlink($old); // حذف عکس قبلی
@@ -195,7 +230,7 @@ $hasAvatar = $avatar ? 'دارد' : 'ندارد';
                         <h5>آپلود عکس پروفایل</h5>
                     </div>
                     <div class="card-body">
-                        <form method="post" data-ajax enctype="multipart/form-data">
+                        <form method="post" action="index.php" data-ajax enctype="multipart/form-data">
                             <input type="hidden" name="action" value="upload_avatar">
                             <div class="mb-3">
                                 <label class="form-label">فایل تصویر</label>
@@ -203,8 +238,8 @@ $hasAvatar = $avatar ? 'دارد' : 'ندارد';
                                     class="form-control" required>
                                 <small class="text-muted">حداکثر ۲ مگابایت (JPG, PNG, WebP, GIF)</small>
                             </div>
-                            <button type="submit" class="btn btn-grad b-avatar w-100"><i
-                                    class="fa-solid fa-upload"></i> آپلود</button>
+                            <button type="submit" class="btn btn-grad b-avatar w-100"><i class="fa-solid fa-upload"></i>
+                                آپلود</button>
                         </form>
                     </div>
                 </div>
@@ -217,7 +252,7 @@ $hasAvatar = $avatar ? 'دارد' : 'ندارد';
                         <h5>تغییر نام کاربری</h5>
                     </div>
                     <div class="card-body">
-                        <form method="post" data-ajax>
+                        <form method="post" action="index.php" data-ajax>
                             <input type="hidden" name="action" value="update_name">
                             <div class="mb-3">
                                 <label class="form-label">نام جدید</label>
@@ -238,7 +273,7 @@ $hasAvatar = $avatar ? 'دارد' : 'ندارد';
                         <h5>تغییر رمز عبور</h5>
                     </div>
                     <div class="card-body">
-                        <form method="post" data-ajax>
+                        <form method="post" action="index.php" data-ajax>
                             <input type="hidden" name="action" value="update_pass">
                             <div class="mb-3">
                                 <label class="form-label">رمز فعلی</label>
